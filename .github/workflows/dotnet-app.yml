@@ -2,7 +2,7 @@ name: "Hello .NET"
 
 on:
   workflow_dispatch:
-  push:
+  # push:
 
 jobs:
   build-test:

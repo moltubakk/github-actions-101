@@ -2,6 +2,7 @@ name: "Hello Deploy"
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
@@ -44,7 +45,6 @@ jobs:
           context: devops-101-cluster
 
       - uses: Azure/k8s-deploy@v3.1
-        with:
         with:
           manifests: Notes.Api/Kubernetes.yaml
           images: devops101registry.azurecr.io/notes-api:v${{ github.run_number }}
