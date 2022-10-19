@@ -2,7 +2,7 @@ name: "Hello Actions!"
 
 on:
   workflow_dispatch:
-  push:
+  # push:
 
 jobs:
   say-hello:
