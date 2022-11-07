@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths-ignore:
-    - '**/main/**'
-    - '**README.md'
+      - '**/main/**'
+      - '**README.md'
     branches:
       - stage
 
