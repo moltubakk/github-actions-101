@@ -2,7 +2,12 @@ name: "Tedial Deploy"
 
 on:
   workflow_dispatch:
-  # push:
+  push:
+    paths-ignore:
+    - '**/main/**'
+    - '**README.md'
+    branches:
+      - stage
 
 jobs:
   validate:
