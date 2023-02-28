@@ -34,7 +34,8 @@ jobs:
 
       - name: Retrieve version
         run: |
-          echo "TAG_NAME=$(git describe --tags --long --abbrev=4)" >> $GITHUB_ENV
+          echo "TAG_NAME=$(git describe --tags --long --abbrev=4)"\
+          >> $GITHUB_ENV
       - name: Output version
         run: |
           echo "${{ env.TAG_NAME }}"
@@ -57,10 +58,10 @@ jobs:
       - name: List files in workflow artifacts folder
         run: |
           ls -al artifacts
-      - name: Push Puppet config files package
-        uses: OctopusDeploy/push-package-action@v1
-        with:
-          api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
-          server: ${{ secrets.OCTOPUSSERVERURL }}
-          packages: "artifacts/OctoPetShop.Database.${{ env.PACKAGE_VERSION }}.zip"
-          space: ${{ secrets.OCTOPUSSERVER_SPACE }}
+      # - name: Push Puppet config files package
+      #   uses: OctopusDeploy/push-package-action@v1
+      #   with:
+      #     api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
+      #     server: ${{ secrets.OCTOPUSSERVERURL }}
+      #     packages: "artifacts/OctoPetShop.Database.${{ env.PACKAGE_VERSION }}.zip"
+      #     space: ${{ secrets.OCTOPUSSERVER_SPACE }}
