@@ -35,11 +35,14 @@ jobs:
         uses: OctopusDeploy/install-octopus-cli-action@v1
         with:
           version: latest
+      - name: List files in workflow folder
+        run: |
+          ls -al
       - name: Package Puppet config files
         run: |
           octo pack --id="PuppetConfigFiles" --format="Zip" \
           --basePath="$GITHUB_WORKSPACE/source" \
           --outFolder="$GITHUB_WORKSPACE/artifacts"
-      - name: List files in artifacts folder
+      - name: List files in workflow folder
         run: |
           ls -al
