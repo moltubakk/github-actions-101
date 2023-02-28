@@ -38,7 +38,8 @@ jobs:
           git fetch --prune --unshallow && \
           git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~ && \
           echo \
-          "PACKAGE_VERSION=$(git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~)" \
+          "PACKAGE_VERSION=\
+          $(git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~)" \
           >> $GITHUB_ENV
       - name: Output tag name
         run: |
@@ -68,5 +69,6 @@ jobs:
         with:
           api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
           server: ${{ secrets.OCTOPUSSERVERURL }}
-          packages: \"artifacts/OctoPetShop.Database.${{ env.PACKAGE_VERSION }}.zip"
+          packages: \
+            "artifacts/PuppetConfigFiles.${{ env.PACKAGE_VERSION }}.zip"
           space: ${{ secrets.OCTOPUSSERVER_SPACE }}
