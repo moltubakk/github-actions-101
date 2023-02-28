@@ -32,6 +32,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Test git describe
+        run: |
+          git describe --tags --long --abbrev=4
+
       - name: Retrieve version
         run: |
           echo "TAG_NAME=$(git describe --tags --long --abbrev=4)"\
