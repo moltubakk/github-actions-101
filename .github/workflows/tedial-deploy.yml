@@ -28,6 +28,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Create artifacts folder
         run: |
           mkdir "$GITHUB_WORKSPACE/artifacts"
@@ -35,14 +37,14 @@ jobs:
         uses: OctopusDeploy/install-octopus-cli-action@v1
         with:
           version: latest
-      - name: List files in workflow folder
+      - name: List files in workflow source folder
         run: |
-          ls -al
+          ls -al source
       - name: Package Puppet config files
         run: |
           octo pack --id="PuppetConfigFiles" --format="Zip" \
           --basePath="$GITHUB_WORKSPACE/source" \
           --outFolder="$GITHUB_WORKSPACE/artifacts"
-      - name: List files in workflow folder
+      - name: List files in workflow artifacts folder
         run: |
-          ls -al
+          ls -al artifacts
