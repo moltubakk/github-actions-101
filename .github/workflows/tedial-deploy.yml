@@ -23,7 +23,7 @@ jobs:
     - name: Show Tag
       id: display
       run: |
-        git fetch --prune --unshallow && git describe --tags --abbrev=0 --match 'v*' --exclude '*-rc*' HEAD~
+        git fetch --prune --unshallow && git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~
 
   # validate:
   #   runs-on: ubuntu-latest
