@@ -9,9 +9,10 @@ on:
     branches:
       - stage
 
+### Environment Variables ###
 env:
-  PACKAGE_VERSION: test-version-001
-  SOMETHING: something
+  ENVIRONMENT: production
+  BRANCH: main
 
 jobs:
   validate:
@@ -31,17 +32,17 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Get tag
-        id: get_tag
+      - name: Get tag name
+        id: get_tag_name
         run: |
           git fetch --prune --unshallow && \
           git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~ && \
           echo \
-          "TAG_NAME=$(git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~)" \
+          "PACKAGE_VERSION=$(git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~)" \
           >> $GITHUB_ENV
-      - name: Output version
+      - name: Output tag name
         run: |
-          echo "${{ env.TAG_NAME }}"
+          echo "${{ env.PACKAGE_VERSION }}"
       - name: Create artifacts folder
         run: |
           mkdir "$GITHUB_WORKSPACE/artifacts"
@@ -55,8 +56,17 @@ jobs:
       - name: Package Puppet config files
         run: |
           octo pack --id="PuppetConfigFiles" --format="Zip" \
+          --version=${{ env.PACKAGE_VERSION }}
           --basePath="$GITHUB_WORKSPACE/source" \
           --outFolder="$GITHUB_WORKSPACE/artifacts"
       - name: List files in workflow artifacts folder
         run: |
           ls -al artifacts
+
+      - name: Push Puppet config files package
+        uses: OctopusDeploy/push-package-action@v1
+        with:
+          api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
+          server: ${{ secrets.OCTOPUSSERVERURL }}
+          packages: \"artifacts/OctoPetShop.Database.${{ env.PACKAGE_VERSION }}.zip"
+          space: ${{ secrets.OCTOPUSSERVER_SPACE }}
