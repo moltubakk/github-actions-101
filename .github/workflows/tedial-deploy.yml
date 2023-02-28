@@ -57,9 +57,9 @@ jobs:
       - name: Package Puppet config files
         run: |
           octo pack --id="PuppetConfigFiles" --format="Zip" \
-          --version=${{ env.PACKAGE_VERSION }}
-          --basePath="$GITHUB_WORKSPACE/artifacts/" \
-          --outFolder="$GITHUB_WORKSPACE/artifacts/PuppetConfigFiles"
+          --version=${{ env.PACKAGE_VERSION }} \
+          --basePath="$GITHUB_WORKSPACE/source" \
+          --outFolder="$GITHUB_WORKSPACE/artifacts"
       - name: List files in workflow artifacts folder
         run: |
           ls -al artifacts
