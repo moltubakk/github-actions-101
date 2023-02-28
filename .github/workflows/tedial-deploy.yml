@@ -37,8 +37,10 @@ jobs:
           version: latest
       - name: Package Puppet config files
         run: |
-          octo pack --id="PuppetConfigFiles" --format="Zip" --version="$PACKAGE_VERSION" \
-          --basePath="$GITHUB_WORKSPACE/source" --outFolder="$GITHUB_WORKSPACE/artifacts"
+          octo pack --id="PuppetConfigFiles" --format="Zip" \
+          --version="$PACKAGE_VERSION" \
+          --basePath="$GITHUB_WORKSPACE/source" \
+          --outFolder="$GITHUB_WORKSPACE/artifacts"
       - name: List files in artifacts folder
         run: |
           ls -al
