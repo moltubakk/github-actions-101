@@ -20,8 +20,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Show Tag
-      id: display
+
+    - name: Get tag
+      id: get_tag
       run: |
         git fetch --prune --unshallow && \
         git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~ && \
@@ -32,51 +33,48 @@ jobs:
       run: |
         echo "${{ env.TAG_NAME }}"
 
-  # validate:
-  #   runs-on: ubuntu-latest
+  validate:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: yaml-lint
-  #       uses: ibiqlik/action-yamllint@v3
-  #     - name: puppet-lint
-  #       uses: scottbrenner/puppet-lint-action@master
-  #       with:
-  #         args: ./
-  # push:
-  #   needs: validate
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v3
-
-  #     - name: Test git describe
-  #       run: |
-  #         git describe --tags --long --abbrev=4
-
-  #     - name: Retrieve version
-  #       run: |
-  #         echo "TAG_NAME=$(git describe --tags --long --abbrev=4)"\
-  #         >> $GITHUB_ENV
-  #     - name: Output version
-  #       run: |
-  #         echo "${{ env.TAG_NAME }}"
-
-  #     - name: Create artifacts folder
-  #       run: |
-  #         mkdir "$GITHUB_WORKSPACE/artifacts"
-  #     - name: Install Octopus CLI
-  #       uses: OctopusDeploy/install-octopus-cli-action@v1
-  #       with:
-  #         version: latest
-  #     - name: List files in workflow source folder
-  #       run: |
-  #         ls -al source
-  #     - name: Package Puppet config files
-  #       run: |
-  #         octo pack --id="PuppetConfigFiles" --format="Zip" \
-  #         --basePath="$GITHUB_WORKSPACE/source" \
-  #         --outFolder="$GITHUB_WORKSPACE/artifacts"
-  #     - name: List files in workflow artifacts folder
-  #       run: |
-  #         ls -al artifacts
+    steps:
+      - uses: actions/checkout@v3
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+      - name: puppet-lint
+        uses: scottbrenner/puppet-lint-action@master
+        with:
+          args: ./
+  push:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Get tag
+        id: get_tag
+        run: |
+          git fetch --prune --unshallow && \
+          git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~ && \
+          echo "TAG_NAME=$(git describe --tags --abbrev=4 --exclude '*-rc*' HEAD~)" \
+          >> $GITHUB_ENV
+      - name: Output version
+        run: |
+          echo "${{ env.TAG_NAME }}"
+      - name: Create artifacts folder
+        run: |
+          mkdir "$GITHUB_WORKSPACE/artifacts"
+      - name: Install Octopus CLI
+        uses: OctopusDeploy/install-octopus-cli-action@v1
+        with:
+          version: latest
+      - name: List files in workflow source folder
+        run: |
+          ls -al source
+      - name: Package Puppet config files
+        run: |
+          octo pack --id="PuppetConfigFiles" --format="Zip" \
+          --basePath="$GITHUB_WORKSPACE/source" \
+          --outFolder="$GITHUB_WORKSPACE/artifacts"
+      - name: List files in workflow artifacts folder
+        run: |
+          ls -al artifacts
