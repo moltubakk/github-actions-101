@@ -69,6 +69,5 @@ jobs:
         with:
           api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
           server: ${{ secrets.OCTOPUSSERVERURL }}
-          packages: \
-            "artifacts/PuppetConfigFiles.${{ env.PACKAGE_VERSION }}.zip"
+          packages: "artifacts/PuppetConfigFiles.${{env.PACKAGE_VERSION}}.zip"
           space: ${{ secrets.OCTOPUSSERVER_SPACE }}
