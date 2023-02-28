@@ -25,7 +25,8 @@ jobs:
         uses: scottbrenner/puppet-lint-action@master
         with:
           args: ./
-  build:
+  push:
+    needs: validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
